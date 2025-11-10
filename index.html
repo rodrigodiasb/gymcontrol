@@ -1,18 +1,24 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+<!doctype html>
+<html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GymControl</title>
-<link rel="stylesheet" href="./css/global.css">
-<link rel="manifest" href="./manifest.json">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>GymControl — Material</title>
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="theme-color" content="#0f62fe" />
+  <link rel="stylesheet" href="/css/global.css" />
 </head>
 <body>
-<div id="app"></div>
-<script src="./js/db.js"></script>
-<script src="./js/app.js"></script>
-<script>
-if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js');
-</script>
+  <div id="root"></div>
+
+  <!-- libs -->
+  <script src="https://unpkg.com/dexie@3.2.2/dist/dexie.min.js"></script>
+  <script src="/js/db.js"></script>
+  <script src="/js/app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js').catch(()=>{});
+    }
+  </script>
 </body>
 </html>

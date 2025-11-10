@@ -1,6 +1,9 @@
 {
-  "name":"GymControl",
-  "short_name":"GymControl",
-  "start_url":"/gymcontrol/",
-  "display":"standalone"
+  "name": "GymControl Material",
+  "short_name": "GymMaterial",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f5f7fb",
+  "theme_color": "#0f62fe",
+  "icons": []
 }
