@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>GymControl</title>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#0b1220">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <header class="topbar">GymControl</header>
+
+  <main id="app">
+    <!-- Home -->
+    <section id="home" class="screen">
+      <div class="container">
+        <div class="card" id="card-treinos" tabindex="0" role="button">
+          <div class="card-icon">🏋️</div>
+          <div class="card-title">Meus Treinos</div>
+        </div>
+
+        <div class="card" id="card-historico" tabindex="0" role="button">
+          <div class="card-icon">📅</div>
+          <div class="card-title">Histórico de Sessões</div>
+        </div>
+
+        <div class="card" id="card-progresso" tabindex="0" role="button">
+          <div class="card-icon">📊</div>
+          <div class="card-title">Progresso</div>
+        </div>
+      </div>
+
+      <button class="fab" id="btn-novo-treino" aria-label="Novo treino">＋</button>
+    </section>
+
+    <!-- Lista de Treinos -->
+    <section id="treinos" class="screen hidden">
+      <div class="screen-header">
+        <button class="back">←</button>
+        <h2>Meus Treinos</h2>
+      </div>
+      <div class="list" id="lista-treinos"></div>
+    </section>
+
+    <!-- Cadastro / Edit -->
+    <section id="cadastro" class="screen hidden">
+      <div class="screen-header">
+        <button class="back">←</button>
+        <h2 id="cadastro-title">Cadastrar Treino</h2>
+      </div>
+
+      <form id="form-treino" class="form">
+        <label class="field">
+          <div class="field-label">Nome do treino</div>
+          <input id="treino-nome" required maxlength="60" />
+        </label>
+
+        <div class="exercises">
+          <h3>Exercícios</h3>
+          <div id="lista-exercicios"></div>
+          <button id="btn-add-exercicio" type="button" class="btn">Adicionar exercício</button>
+        </div>
+
+        <div class="actions">
+          <button type="submit" class="btn primary">Salvar treino</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Execução / Dash -->
+    <section id="execucao" class="screen hidden">
+      <div class="screen-header">
+        <button class="back">←</button>
+        <h2 id="exec-title">Execução</h2>
+      </div>
+
+      <div id="exec-content" class="exec-content"></div>
+      <div class="exec-footer">
+        <button id="btn-finalizar-sessao" class="btn primary">Finalizar sessão</button>
+      </div>
+    </section>
+
+    <!-- Histórico (simples) -->
+    <section id="historico" class="screen hidden">
+      <div class="screen-header">
+        <button class="back">←</button>
+        <h2>Histórico</h2>
+      </div>
+      <div id="lista-sessoes" class="list"></div>
+    </section>
+
+  </main>
+
+  <template id="template-exercicio">
+    <div class="exercise-item">
+      <div class="exercise-left">
+        <input class="ex-nome" placeholder="Nome do exercício" required />
+        <input type="number" class="ex-reps" placeholder="Repetições" min="1" />
+      </div>
+      <div class="exercise-right">
+        <input type="number" class="ex-carga" placeholder="Carga (kg)" min="0" step="0.5" />
+        <button class="ex-remove btn-small" title="Remover">✖</button>
+      </div>
+    </div>
+  </template>
+
+  <!-- libs -->
+  <script src="https://unpkg.com/dexie@3.2.2/dist/dexie.min.js"></script>
+  <script src="/js/db.js"></script>
+  <script src="/js/app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js').catch(() => {});
+    }
+  </script>
+</body>
+</html>
