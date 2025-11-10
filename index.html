@@ -4,20 +4,28 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>GymControl — Material</title>
-  <link rel="manifest" href="/manifest.json" />
+
+  <!-- Caminho relativo para GitHub Pages -->
+  <link rel="manifest" href="./manifest.json" />
   <meta name="theme-color" content="#0f62fe" />
-  <link rel="stylesheet" href="/css/global.css" />
+
+  <!-- CSS relativo -->
+  <link rel="stylesheet" href="./css/global.css" />
 </head>
+
 <body>
   <div id="root"></div>
 
-  <!-- libs -->
+  <!-- Dexie CDN -->
   <script src="https://unpkg.com/dexie@3.2.2/dist/dexie.min.js"></script>
-  <script src="/js/db.js"></script>
-  <script src="/js/app.js"></script>
+
+  <!-- JS relativos -->
+  <script src="./js/db.js"></script>
+  <script src="./js/app.js"></script>
+
   <script>
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js').catch(()=>{});
+      navigator.serviceWorker.register('./sw.js').catch(()=>{});
     }
   </script>
 </body>
