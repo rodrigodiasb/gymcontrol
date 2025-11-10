@@ -1,1 +1,50 @@
-body{font-family:sans-serif;padding:20px;}
+/* Material-inspired global styles (mobile-first) */
+:root{
+  --bg:#f5f7fb;
+  --surface:#ffffff;
+  --primary:#0f62fe;
+  --on-primary:#ffffff;
+  --muted:#6b7280;
+  --radius:12px;
+  --shadow: 0 8px 20px rgba(16,24,40,0.08);
+  --glass: linear-gradient(180deg, rgba(255,255,255,0.75), rgba(255,255,255,0.6));
+}
+*{box-sizing:border-box}
+html,body,#root{height:100%;margin:0;font-family:Inter, Roboto, 'Helvetica Neue', Arial, sans-serif;background:var(--bg);color:#0b1020}
+
+/* app shell */
+.app-shell{max-width:720px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column}
+.topbar{height:64px;background:var(--primary);color:var(--on-primary);display:flex;align-items:center;padding:0 16px;font-weight:600;font-size:1.1rem;box-shadow:0 2px 6px rgba(11,28,80,0.12)}
+
+main.content{flex:1;padding:16px}
+
+/* cards */
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.card{background:var(--surface);padding:14px;border-radius:14px;box-shadow:var(--shadow);display:flex;gap:12px;align-items:center;cursor:pointer}
+.card .icon{font-size:1.6rem}
+.card .title{font-weight:700}
+.fab{position:fixed;right:18px;bottom:18px;width:56px;height:56px;border-radius:50%;background:var(--primary);color:var(--on-primary);border:none;display:flex;align-items:center;justify-content:center;font-size:28px;box-shadow:0 12px 30px rgba(15,98,254,0.18);cursor:pointer}
+
+/* lists */
+.list{display:flex;flex-direction:column;gap:10px;padding:6px 0}
+.item{background:var(--surface);padding:12px;border-radius:12px;box-shadow:var(--shadow);display:flex;justify-content:space-between;align-items:center}
+.muted{color:var(--muted);font-size:0.85rem}
+
+/* form */
+.form{display:flex;flex-direction:column;gap:12px}
+.field{display:flex;flex-direction:column;gap:6px}
+input[type=text], input[type=number], textarea, select{padding:10px;border-radius:10px;border:1px solid #e6e9ef;background:transparent}
+.btn-row{display:flex;gap:8px}
+.btn{padding:10px 12px;border-radius:10px;border:none;cursor:pointer}
+.btn.primary{padding:10px 12px;border-radius:10px;border:none;cursor:pointer;background:var(--primary);color:var(--on-primary)}
+.btn.ghost{background:transparent;border:1px solid #e6e9ef}
+
+/* exec */
+.exec-block{background:var(--surface);padding:12px;border-radius:12px;box-shadow:var(--shadow);display:flex;justify-content:space-between;align-items:center}
+.input-small{width:86px;padding:8px;border-radius:8px}
+
+/* responsive */
+@media(min-width:720px){
+  .grid{grid-template-columns:repeat(3,1fr)}
+  .fab{right:32px;bottom:32px}
+}
