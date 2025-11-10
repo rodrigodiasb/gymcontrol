@@ -1,48 +1,33 @@
-// db.js - wrapper for Dexie, attaches DB API to window.DB for non-module usage
-const DexieLib = window.Dexie;
-const dexieDB = new DexieLib('GymControlDB');
+// db.js — Dexie wrapper exposed as window.DB
+(function(){
+  const dexie = new Dexie('GymControlMaterialDB');
+  dexie.version(1).stores({
+    treinos: '++id, nome, criado_em',
+    exercicios: '++id, treino_id, nome, repeticoes, carga, observacao',
+    sessoes: '++id, treino_id, data',
+    sessoes_exercicios: '++id, sessao_id, nome, repeticoes, carga'
+  });
 
-dexieDB.version(1).stores({
-  treinos: '++id, nome, criado_em',
-  exercicios: '++id, treino_id, nome, repeticoes, carga, observacao',
-  sessoes: '++id, treino_id, data',
-  sessoes_exercicios: '++id, sessao_id, nome, repeticoes, carga'
-});
+  const API = {
+    db: dexie,
+    criarTreino: async (t)=> {
+      const id = await dexie.treinos.add({...t, criado_em:new Date().toISOString()});
+      return id;
+    },
+    atualizarTreino: async (id,payload)=> dexie.treinos.update(id,payload),
+    deletarTreino: async (id)=> { await dexie.exercicios.where('treino_id').equals(id).delete(); return dexie.treinos.delete(id); },
+    listarTreinos: async ()=> dexie.treinos.orderBy('criado_em').reverse().toArray(),
+    adicionarExercicio: async (treino_id, ex)=> dexie.exercicios.add({...ex, treino_id}),
+    listarExerciciosDoTreino: async (treino_id)=> dexie.exercicios.where('treino_id').equals(treino_id).toArray(),
+    salvarSessao: async (sessao, exercicios)=> {
+      const id = await dexie.sessoes.add({treino_id:sessao.treino_id, data:new Date().toISOString()});
+      const items = exercicios.map(e=>({...e, sessao_id:id}));
+      await dexie.sessoes_exercicios.bulkAdd(items);
+      return id;
+    },
+    listarSessoes: async ()=> dexie.sessoes.orderBy('data').reverse().toArray(),
+    listarExerciciosSessao: async (sessao_id)=> dexie.sessoes_exercicios.where('sessao_id').equals(sessao_id).toArray()
+  };
 
-const DB = {
-  db: dexieDB,
-  async criarTreino(treino){
-    const id = await dexieDB.treinos.add({...treino, criado_em: new Date().toISOString()});
-    return id;
-  },
-  async atualizarTreino(id, payload){
-    return dexieDB.treinos.update(id, payload);
-  },
-  async deletarTreino(id){
-    await dexieDB.exercicios.where('treino_id').equals(id).delete();
-    return dexieDB.treinos.delete(id);
-  },
-  async listarTreinos(){
-    return dexieDB.treinos.orderBy('criado_em').reverse().toArray();
-  },
-  async adicionarExercicio(treino_id, ex){
-    return dexieDB.exercicios.add({...ex, treino_id});
-  },
-  async listarExerciciosDoTreino(treino_id){
-    return dexieDB.exercicios.where('treino_id').equals(treino_id).toArray();
-  },
-  async salvarSessao(sessao, exercicios){
-    const sessaoId = await dexieDB.sessoes.add({treino_id: sessao.treino_id, data: new Date().toISOString()});
-    const items = exercicios.map(e => ({...e, sessao_id: sessaoId}));
-    await dexieDB.sessoes_exercicios.bulkAdd(items);
-    return sessaoId;
-  },
-  async listarSessoes(){
-    return dexieDB.sessoes.orderBy('data').reverse().toArray();
-  },
-  async listarExerciciosSessao(sessao_id){
-    return dexieDB.sessoes_exercicios.where('sessao_id').equals(sessao_id).toArray();
-  }
-};
-
-window.DB = DB;
+  window.DB = API;
+})();
