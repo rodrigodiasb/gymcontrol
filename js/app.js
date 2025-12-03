@@ -1,4 +1,4 @@
-// js/app.js - SPA GymControl (com séries, Backup, Play na lista e marcação de exercício realizado)
+// js/app.js - SPA GymControl (sem séries, com Backup, Play na lista e marcação de exercício realizado)
 (function () {
   const root = document.getElementById('root');
 
@@ -179,22 +179,15 @@
     const exContainer = el('div', { class: 'stack' }, []);
 
     function addExRow(ex) {
-      ex = ex || { id: null, nome: '', series: 3, repeticoes: 10, carga: 0, observacao: '' };
+      ex = ex || { id: null, nome: '', repeticoes: 10, carga: 0, observacao: '' };
       const row = el('div', { class: 'card ex-row' }, []);
       if (ex.id) row.dataset.exId = ex.id;
 
       const nome = el('input', {
         type: 'text',
         class: 'input ex-nome',
-        value: ex.nome || '',
+        value: ex.nome,
         placeholder: 'Exercício (ex: Supino reto)'
-      });
-
-      const series = el('input', {
-        type: 'number',
-        class: 'input-small ex-series',
-        value: ex.series != null ? ex.series : 3,
-        min: 0
       });
 
       const reps = el('input', {
@@ -228,8 +221,6 @@
         nome
       ]);
       const midLine = el('div', { class: 'btn-row' }, [
-        el('span', {}, ['Séries: ']),
-        series,
         el('span', {}, ['Reps: ']),
         reps,
         el('span', {}, ['Kg: ']),
@@ -267,7 +258,6 @@
         const data = rows.map((r) => ({
           id: r.dataset.exId ? Number(r.dataset.exId) : null,
           nome: r.querySelector('.ex-nome').value.trim(),
-          series: Number(r.querySelector('.ex-series').value) || 0,
           repeticoes: Number(r.querySelector('.ex-reps').value) || 0,
           carga: Number(r.querySelector('.ex-carga').value) || 0,
           observacao: r.querySelector('.ex-obs').value.trim()
@@ -301,7 +291,6 @@
         for (const ex of data) {
           const payload = {
             nome: ex.nome,
-            series: ex.series,
             repeticoes: ex.repeticoes,
             carga: ex.carga,
             observacao: ex.observacao
@@ -389,22 +378,14 @@
 
       const statusPill = el('span', { class: 'badge' }, ['Em andamento']);
 
-      const seriesBase = e.series != null ? e.series : 3;
       const nameLine = el('div', { class: 'exec-name-row' }, [
         el('div', { class: 'exec-name' }, [`${idx + 1}. ${e.nome}`]),
         statusPill
       ]);
 
       const baseLine = el('div', { class: 'muted exec-base' }, [
-        `Base: ${seriesBase} séries · ${e.repeticoes || 0} reps · ${e.carga || 0} kg`
+        `Base: ${e.repeticoes || 0} reps · ${e.carga || 0} kg`
       ]);
-
-      const seriesInput = el('input', {
-        type: 'number',
-        class: 'input-small cur-series',
-        value: seriesBase,
-        min: 0
-      });
 
       const repsInput = el('input', {
         type: 'number',
@@ -431,8 +412,6 @@
 
       const actions = el('div', { class: 'exec-actions' }, [
         el('div', { class: 'exec-inputs' }, [
-          el('label', { class: 'exec-label' }, ['Séries']),
-          seriesInput,
           el('label', { class: 'exec-label' }, ['Reps']),
           repsInput,
           el('label', { class: 'exec-label' }, ['Kg']),
@@ -462,7 +441,6 @@
             .textContent
             .replace(/^\d+\.\s*/, '')
             .trim(),
-          series: Number(b.querySelector('.cur-series').value) || 0,
           repeticoes: Number(b.querySelector('.cur-reps').value) || 0,
           carga: Number(b.querySelector('.cur-carga').value) || 0
         }));
@@ -474,7 +452,6 @@
           for (const it of items) {
             if (!it.exercicio_id) continue;
             await window.DB.atualizarExercicio(it.exercicio_id, {
-              series: it.series,
               repeticoes: it.repeticoes,
               carga: it.carga
             });
@@ -543,7 +520,7 @@
       el('div', { class: 'card' }, [
         el('div', { class: 'card-title' }, [e.nome]),
         el('div', { class: 'muted' }, [
-          `${e.series != null ? e.series : 0} séries · ${e.repeticoes || 0} reps · ${e.carga || 0} kg`
+          `${e.repeticoes || 0} reps · ${e.carga || 0} kg`
         ])
       ])
     );
